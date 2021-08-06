@@ -1,6 +1,6 @@
 /*
  * TestModel TestModel.java.
- * 
+ *
  * Copyright (c) 2018 OptimIT d.o.o.. All rights reserved.
  */
 package com.example.application.views.helloworld;
@@ -28,6 +28,10 @@ public class TestModel {
   public String name;
 
   public int age;
+
+  public TestModel() {
+    this.createDate = new Date();
+  }
 
   public TestModel(String name, int age) {
     this.name = name;

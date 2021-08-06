@@ -33,16 +33,22 @@ public class HelloWorldView extends HorizontalLayout {
     addClassName("hello-world-view");
     name = new TextField("Your name");
     sayHello = new Button("Say hello");
+    final Button b = new Button();
+    b.setText("ispisi");
+    b.addClickListener(e -> {
+      re.findAll().forEach(tm -> Notification.show(tm.name + " " + tm.age));
+    });
     add(name, sayHello);
+    add(b);
     setVerticalComponentAlignment(Alignment.END, name, sayHello);
     sayHello.addClickListener(e -> {
       Notification.show("Hello " + name.getValue());
-      final TestModel m = new TestModel("name1" + LocalDateTime.now().getSecond(), LocalDate.now().getMonthValue());
+      final TestModel m = new TestModel(name.getValue() + LocalDateTime.now().getSecond(), LocalDate.now().getMonthValue());
       final TestModel saved = re.save(m);
       if (saved == null) {
-        Notification.show("saved");
-      } else {
         Notification.show("not saved");
+      } else {
+        Notification.show("saved");
       }
     });
   }
