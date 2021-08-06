@@ -1,32 +1,50 @@
+/*
+ * HelloWorldView HelloWorldView.java.
+ *
+ * Copyright (c) 2018 OptimIT d.o.o.. All rights reserved.
+ */
 package com.example.application.views.helloworld;
 
+import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-import com.example.application.views.MainLayout;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("Hello World")
 @Route(value = "hello", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 public class HelloWorldView extends HorizontalLayout {
 
-    private TextField name;
-    private Button sayHello;
+  private final TextField name;
+  private final Button sayHello;
+  @Autowired
+  private TestModelRepository re;
 
-    public HelloWorldView() {
-        addClassName("hello-world-view");
-        name = new TextField("Your name");
-        sayHello = new Button("Say hello");
-        add(name, sayHello);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
-        sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
-        });
-    }
+  public HelloWorldView() {
+    addClassName("hello-world-view");
+    name = new TextField("Your name");
+    sayHello = new Button("Say hello");
+    add(name, sayHello);
+    setVerticalComponentAlignment(Alignment.END, name, sayHello);
+    sayHello.addClickListener(e -> {
+      Notification.show("Hello " + name.getValue());
+      final TestModel m = new TestModel("name1" + LocalDateTime.now().getSecond(), LocalDate.now().getMonthValue());
+      final TestModel saved = re.save(m);
+      if (saved == null) {
+        Notification.show("saved");
+      } else {
+        Notification.show("not saved");
+      }
+    });
+  }
 
 }
